@@ -1,2 +1,2 @@
 ﻿  Main.cpp
-  raytracer.vcxproj -> D:\Documents\C++\raytracer\Debug\raytracer.exe
+d:\documents\c++\raytracer\main.cpp(26): error C2065: 'cerr': undeclared identifier
