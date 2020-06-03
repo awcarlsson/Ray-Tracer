@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include "hittable.h"
 #include "vec3.h"
@@ -46,3 +47,5 @@ bool sphere::hit(const ray& r, double tmin, double tmax, hit_record& rec) const 
 	}
 	return false;
 }
+
+#endif
