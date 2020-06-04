@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 color ray_color(const ray& r, const hittable& world) {
 	hit_record rec;
@@ -18,13 +19,22 @@ color ray_color(const ray& r, const hittable& world) {
 }
 
 int main() {
+	// Toggle if want the ppm to be automatically generated
+	bool write_ppm = true;
+	std::string image_name = "hittable";
+
 	const auto aspect_ratio = 16.0 / 9.0;
 	const int image_width = 384;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
 	
 	std::ofstream outfile;
-	outfile.open("image.ppm");
-	outfile << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+	if (write_ppm) {
+		outfile.open("images/" + image_name + ".ppm");
+		outfile << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+	}
+	else {
+		std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+	}
 	
 	auto viewport_height = 2.0;
 	auto viewport_width = aspect_ratio * viewport_height;
@@ -49,10 +59,14 @@ int main() {
 
 			color pixel_color = ray_color(r, world);
 
-			write_color(outfile, pixel_color);
+			if (write_ppm)
+				write_color(outfile, pixel_color);
+			else
+				write_color(std::cout, pixel_color);
 		}
 	}
 	std::cerr << "\nDone.\n";
-	outfile.close();
-	//system("pause");
+
+	if(write_ppm)
+		outfile.close();
 }
