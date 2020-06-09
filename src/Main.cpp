@@ -11,12 +11,12 @@
 
 color ray_color(const ray& r, const hittable& world, int depth) {
 	hit_record rec;
-	// Once the recursive ray count is exceeded, return white (no more color info gathered)
+	// Once the recursive ray count is exceeded, return black (no more color info gathered)
 	if (depth <= 0)
 		return color(0, 0, 0);
 	// If an object in the world is hit, shoot another ray in a random direction to gather more
 	// color data
-	if (world.hit(r, 0, infinity, rec)) {
+	if (world.hit(r, 0.001, infinity, rec)) {
 		point3 target = rec.p + rec.normal + random_in_unit_sphere();
 		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
 	}
@@ -29,11 +29,11 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "lambert";
+	std::string image_name = "gamma";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
-	const int image_width = 1000;
+	const int image_width = 500;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
 	const int samples_per_pixel = 100; // Number of rays to shoot per pixel
 	const int max_depth = 50; // Number of times a ray can recurse to gather color data
