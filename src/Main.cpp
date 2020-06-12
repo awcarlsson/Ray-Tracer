@@ -4,6 +4,7 @@
 #include "hittable_list.h"
 #include "sphere.h"
 #include "camera.h"
+#include "material.h"
 
 #include <iostream>
 #include <fstream>
@@ -17,8 +18,11 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 	// If an object in the world is hit, shoot another ray in a random direction to gather more
 	// color data
 	if (world.hit(r, 0.001, infinity, rec)) {
-		point3 target = rec.p + rec.normal + random_in_unit_sphere();
-		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
+		ray scattered;
+		color attenuation;
+		if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+			return attenuation * ray_color(scattered, world, depth - 1);
+		return color(0, 0, 0);
 	}
 	// If nothing is hit, return a background color
 	vec3 unit_direction = unit_vector(r.direction());
@@ -29,7 +33,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "gamma";
+	std::string image_name = "gamma2";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
