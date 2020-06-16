@@ -33,7 +33,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "snell";
+	std::string image_name = "refract";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
