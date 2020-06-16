@@ -33,7 +33,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "metal";
+	std::string image_name = "snell";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
@@ -61,7 +61,7 @@ int main() {
 	world.add(make_shared<sphere>(
 		point3(0, -100.5, -1), 100, make_shared<lambertian>(color(0.8, 0.8, 0.0))));
 
-	world.add(make_shared<sphere>(point3(1, 0, -1), 0.5, make_shared<metal>(color(.8, .6, .2), 0.7)));
+	world.add(make_shared<sphere>(point3(1, 0, -1), 0.5, make_shared<dielectric>(1.4)));
 	world.add(make_shared<sphere>(point3(-1, 0, -1), 0.5, make_shared<metal>(color(.8, .8, .8), 0)));
 
 	camera cam;
