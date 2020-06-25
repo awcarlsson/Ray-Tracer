@@ -33,7 +33,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "cam";
+	std::string image_name = "testt2";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
@@ -61,7 +61,7 @@ int main() {
 	world.add(make_shared<sphere>(point3(-1, 0, -1), 0.5, make_shared<dielectric>(1.5)));
 	world.add(make_shared<sphere>(point3(-1, 0, -1), -0.45, make_shared<dielectric>(1.5)));
 
-	camera cam(110, double(image_width)/image_height);
+	camera cam(point3(-2, 1, 1), point3(0, 0, -1), vec3(0, 1, 0), 90, aspect_ratio);
 
 	// Cycles through each pixel of the image
 	for (int j = image_height-1; j >= 0; --j) {
@@ -86,6 +86,9 @@ int main() {
 	}
 	std::cerr << "\nDone.\n";
 
-	if(write_ppm)
+	if (write_ppm) {
 		outfile.close();
+		std::string sys_cmd = "convert images/" + image_name + ".ppm images/" + image_name + ".png";
+		system(sys_cmd.c_str());
+	}
 }
