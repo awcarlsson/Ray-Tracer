@@ -33,7 +33,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 int main() {
 	// Toggle if want the ppm to be automatically generated
 	bool write_ppm = true;
-	std::string image_name = "refract";
+	std::string image_name = "cam";
 
 	// Sets up the image properties
 	const auto aspect_ratio = 16.0 / 9.0;
@@ -55,16 +55,13 @@ int main() {
 	// Creates the objects populating the world
 	hittable_list world;
 
-	world.add(make_shared<sphere>(
-		point3(0, 0, -1), 0.5, make_shared<lambertian>(color(0.7, 0.3, 0.3))));
+	world.add(make_shared<sphere>(point3(0, 0, -1), 0.5, make_shared<lambertian>(color(.1, .2, .5))));
+	world.add(make_shared<sphere>(point3(0, -100.5, -1), 100, make_shared<lambertian>(color(.8, .8, 0.))));
+	world.add(make_shared<sphere>(point3(1, 0, -1), 0.5, make_shared<metal>(color(.8, .6, .2), 0.3)));
+	world.add(make_shared<sphere>(point3(-1, 0, -1), 0.5, make_shared<dielectric>(1.5)));
+	world.add(make_shared<sphere>(point3(-1, 0, -1), -0.45, make_shared<dielectric>(1.5)));
 
-	world.add(make_shared<sphere>(
-		point3(0, -100.5, -1), 100, make_shared<lambertian>(color(0.8, 0.8, 0.0))));
-
-	world.add(make_shared<sphere>(point3(1, 0, -1), 0.5, make_shared<dielectric>(1.4)));
-	world.add(make_shared<sphere>(point3(-1, 0, -1), 0.5, make_shared<metal>(color(.8, .8, .8), 0)));
-
-	camera cam;
+	camera cam(110, double(image_width)/image_height);
 
 	// Cycles through each pixel of the image
 	for (int j = image_height-1; j >= 0; --j) {
